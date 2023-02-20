@@ -11,8 +11,9 @@ private const val TAG = "DetailActivity"
 class DetailActivity : AppCompatActivity() {
     private lateinit var mediaImageView: ImageView
     private lateinit var titleTextView: TextView
-    private lateinit var bylineTextView: TextView
-    private lateinit var abstractTextView: TextView
+    private lateinit var dateTextView: TextView
+    private lateinit var overviewTextView: TextView
+    private lateinit var languageTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,17 +21,18 @@ class DetailActivity : AppCompatActivity() {
 
         mediaImageView = findViewById(R.id.mediaImage)
         titleTextView = findViewById(R.id.mediaTitle)
-        bylineTextView = findViewById(R.id.mediaByline)
-        abstractTextView = findViewById(R.id.mediaAbstract)
+        dateTextView = findViewById(R.id.mediaDate)
+        overviewTextView = findViewById(R.id.mediaOverview)
+        languageTextView = findViewById(R.id.mediaLanguage)
 
-        val article = intent.getSerializableExtra(ARTICLE_EXTRA) as Article
+        val article = intent.getSerializableExtra(ARTICLE_EXTRA) as Show
 
-        titleTextView.text = article.headline?.main
-        bylineTextView.text = article.byline?.original
-        abstractTextView.text = article.abstract
-
+        titleTextView.text = article.name
+        dateTextView.text = article.first_air_date
+        overviewTextView.text = article.overview
+        languageTextView.text = article.original_language
         Glide.with(this)
-            .load(article.mediaImageUrl)
+            .load("https://image.tmdb.org/t/p/w500" + article.backdrop_path)
             .into(mediaImageView)
     }
 }

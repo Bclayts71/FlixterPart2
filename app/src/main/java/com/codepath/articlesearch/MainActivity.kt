@@ -22,10 +22,11 @@ fun createJson() = Json {
 private const val TAG = "MainActivity/"
 private const val SEARCH_API_KEY = BuildConfig.API_KEY
 private const val ARTICLE_SEARCH_URL =
-    "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${SEARCH_API_KEY}"
+    "https://api.themoviedb.org/3/tv/top_rated?api_key=${SEARCH_API_KEY}"
+
 
 class MainActivity : AppCompatActivity() {
-    private val articles = mutableListOf<Article>()
+    private val articles = mutableListOf<Show>()
     private lateinit var articlesRecyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
 
@@ -38,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        articlesRecyclerView = findViewById(R.id.articles)
-        val articleAdapter = ArticleAdapter(this, articles)
+        articlesRecyclerView = findViewById(R.id.shows)
+        val articleAdapter =ShowAdapter(this, articles)
         articlesRecyclerView.adapter = articleAdapter
 
         articlesRecyclerView.layoutManager = LinearLayoutManager(this).also {
@@ -62,11 +63,11 @@ class MainActivity : AppCompatActivity() {
                 Log.i(TAG, "Successfully fetched articles: $json")
                 try {
                     val parsedJson = createJson().decodeFromString(
-                        SearchNewsResponse.serializer(),
+                        SearchTvResponse.serializer(),
                         json.jsonObject.toString()
                     )
 
-                    parsedJson.response?.docs?.let { list ->
+                    parsedJson.shows?.let { list ->
                         articles.addAll(list)
                     }
 
